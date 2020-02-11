@@ -1,40 +1,29 @@
-# deno sandbox
+# deno docker container
 
-This will be a dockerized deno sandbox
+a containerized deno application
 
-## Vision
+## About
 
-Be able to run deno applications from within the docker container without having to install deno locally.
+This repo contains a base image at `/docker/Dockerfile.deno` and an example project image at `/docker/Dockerfile`
 
-e.g.
+## How To
 
-```
-$ docker run -it --rm deno --allow-net --allow-read server.ts
-```
+### Quick start
 
-## Strategy
+Use the makefile. Run `make` to build the sample project and start a server listening on port 8000.
 
-1. Start with one container: just one for the server file.
-1. Don't bother with docker-compose until we have more than one container.
+### Slow Start
 
-## Roadmap
+1. Build the base image: `docker build -f docker/Dockerfile.deno -t deno .` (Call the target whatever you want. But in this example `/docker/Dockerfile` is looking for a base image called "deno".
 
-- Dockerfile
-    - [x] Build a Dockerfile, OR
-    - [ ] Just use the dockerhub image
+2. Build your project: `docker build -f docker/Dockerfile -t app . && docker run -it --init -p 8000:8000 app`
 
 ## Resources
 
 ### Deno
 
-- https://deno.land/
-
-### Docker examples
-
-- https://github.com/Skookum/gps/
-- https://github.com/DrewDahlman/dockerize-all-the-things/
+- <https://deno.land/>
 
 ### Deno Docker
 
-- https://hub.docker.com/r/maxmcd/deno
-
+- <https://github.com/hayd/deno-docker>
