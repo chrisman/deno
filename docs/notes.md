@@ -12,6 +12,10 @@ Notes about docker and dockerfiles
 
 - "use multi-stage builds to keep your images lean" [src](https://docs.docker.com/develop/develop-images/multistage-build/)
 
+- `docker run` vs `docker exec`: "docker run" seems to build images and containers. "docker exec" on the other hand runs commands inside containers. Exactly the thing I was looking for when wanting to run stuff like `deno fmt`, `deno repl` etc locally.
+
+- Volumes: these are indeed the correct way to share data storage between a container and a host. The trick is that *docker* requires the volume to be an absolute path. *docker-compose* allows relative paths, which is obviously the more correct implementation. A little `$(shell pwd)` in the Makefile fixed all our woes and worries: you can now edit files locally and `make r` to restart the server, and you can now `make fmt` to run the formatter from inside the container on your local `.ts` files.
+
 ## Deno
 
 Notes about deno
