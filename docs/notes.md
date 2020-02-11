@@ -10,6 +10,8 @@ Notes about docker and dockerfiles
 
 - in a dockerfile, `FROM` looks for a named local image first, then on dockerhub.
 
+- "use multi-stage builds to keep your images lean" [src](https://docs.docker.com/develop/develop-images/multistage-build/)
+
 ## Deno
 
 Notes about deno
