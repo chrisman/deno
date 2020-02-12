@@ -5,9 +5,7 @@ all: container
 
 app: .make.app
 .make.app:
-	docker build \
-		-f docker/Dockerfile \
-		-t app .
+	docker build -t app .
 	touch .make.app
 
 
@@ -35,6 +33,7 @@ fmt: container
 
 
 clean:
+	docker container rm server
 	rm .make.*
 
 

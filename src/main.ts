@@ -1,6 +1,6 @@
 import { serve } from "./deps.ts";
 
-const PORT = 8000;
+const { PORT = 8000 } = Deno.env()
 const s = serve(`0.0.0.0:${PORT}`);
 const body = new TextEncoder().encode("Hola, Wikipedia!\n");
 

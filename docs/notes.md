@@ -21,3 +21,25 @@ Notes about docker and dockerfiles
 Notes about deno
 
 - apparently using a `deps.ts` file is conventional now? makes sense, and also kind of feels like making some kind of *actual* package.json file in the sense that it's a list of dependencies, but without all the extra package.json crap like scripts and metadata, etc, etc. Anyway, allows you to list all your deps in one place, which is convenient. Reduces complexity: you only have to look at one place to see all your URLs and resources. And also allows you to fetch your deps once as a single layer in your Dockerfile, so they should cache and never refetch unless you update that deps file. Question: Is this really necessary? does deno not cache deps by default? see: `Remote code is fetched and cached on first execution, and never updated until the code is run with the --reload flag. (So, this will still work on an airplane.)` [src](https://deno.land/std/manual.md#other-key-behaviors)
+
+## Heroku
+
+boy howdy, heroku was annoying
+
+- Can't have Dockerfile anywhere but in the root directory:
+
+    > The Docker build context is always set to the directory containing the Dockerfile and cannot be configured independently.
+
+    [src](https://devcenter.heroku.com/articles/build-docker-images-heroku-yml#known-issues-and-limitations)
+
+- tried both methods of deploying a container: using heroku.yml [1], and pushing to the container registry [2]. Turned out option 2 was the one that worked.
+
+    [1] https://devcenter.heroku.com/articles/build-docker-images-heroku-yml
+
+    [2] https://devcenter.heroku.com/articles/container-registry-and-runtime
+
+    although, option 2 only worked after I did a `heroku stack:set container` as described in option 1, so who's to say whether it worked entirely by itself 🤷‍♀️
+
+    Some aspect of the Option 1 process (possibly combined with a lack of --allow-env as described below) generated a horribly non-useful error message about not being able to access deno's cache folder, which had me chasing wild geese down seveal rabbit holes.
+
+- also forgot that I needed to allow docker to pass the port number through an environment variable. This required a `--allow-env` flag to deno (nice) and a `const { PORT = 8000 } = Deno.env()` in `main.ts`.
